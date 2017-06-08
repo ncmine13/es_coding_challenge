@@ -3,7 +3,20 @@ var Papa = require('babyparse');
 var fs = require('fs');
 var file = 'data/domain_order.csv';
 
-var sampleStudent = [5,5,5,2]
+var sampleStudent = ['5','5','5','2']
+var studentStrings = [];
+var types = ['RF', 'RL', 'RI', 'L'];
+for(i=0;i<sampleStudent.length;i++){
+	for(i=0;i<sampleStudent.length; i++){
+		var j = sampleStudent[i].split("");
+		var k = types[i];
+		j.push(k);
+		var l = j.join("");
+		studentStrings.push(l);
+	}
+}
+console.log(studentStrings, "strings");
+
 min = Math.min.apply(Math, sampleStudent)
 console.log(min, "this is min");
 

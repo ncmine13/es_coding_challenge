@@ -6,7 +6,7 @@ describe("The produce plan function", function(){
 		var testArray = [[[ '2' ], [ '3' ], [ 0 ], [ '3' ]]];
 		var student = testArray[0];
 		var logInterceptor = intercept(function(txt){
-			expect(txt).toEqual("0RI, 1RI, 2RF, 2RI, 3RF\n");
+			expect(txt).toEqual("0.RI, 1.RI, 2.RF, 2.RI, 3.RF\n");
 		});
 
 		producePlan.producePlan(student);
@@ -17,7 +17,7 @@ describe("The produce plan function", function(){
 		var testArray = [[]];
 		var student = testArray[0];
 		var logInterceptor = intercept(function(txt){
-			expect(txt).toEqual("0RF, 0RL, 0RI, 1RF, 1RL\n");
+			expect(txt).toEqual("0.RF, 0.RL, 0.RI, 1.RF, 1.RL\n");
 		});
 
 		producePlan.producePlan(student);

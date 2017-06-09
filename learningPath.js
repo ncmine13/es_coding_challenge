@@ -5,7 +5,7 @@ var file2 = 'data/student_tests.csv';
 var domainOrder = fs.readFileSync(file1, { encoding: 'binary' });
 var studentTests = fs.readFileSync(file2, { encoding: 'binary' });
 
-var types = ['RF', 'RL', 'RI', 'L'];
+var types = [];
 var grade = [];
 var topic = [];
 var students = [];
@@ -34,14 +34,19 @@ Papa.parse(studentTests, {
 		var rowData = row.data[0];
 		var studentInfo = [];
 		testInfo = [];
+		typeLabel = [];
 		for(key in rowData){
 			studentInfo.push(rowData[key])
+		}
+		for(key in rowData){
+			typeLabel.push(key)
 		}
 		students.push(studentInfo[0])
 		for(var i=1;i<studentInfo.length;i++){
 			testInfo.push([studentInfo[i]])
 		}
-		testArray.push(testInfo)
+		testArray.push(testInfo);
+		types = [typeLabel[1],typeLabel[2], typeLabel[3], typeLabel[4]]
 	}
 });
 

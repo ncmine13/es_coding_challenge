@@ -5,12 +5,12 @@ var file1 = 'data/domain_order.csv';
 var file2 = 'data/student_tests.csv';
 
 
-var sampleStudent = []
+
 var types = ['RF', 'RL', 'RI', 'L'];
-var studentStrings = [];
+// var studentStrings = [];
 var grade = [];
 var topic = [];
-var plan = [];
+
 
 var domainOrder = fs.readFileSync(file1, { encoding: 'binary' });
 Papa.parse(domainOrder, {
@@ -29,44 +29,6 @@ Papa.parse(domainOrder, {
 });
 
 
-for(i=0;i<grade.length;i++){
-grade[i].splice(1, 0, topic[i])
-}
-	// console.log(testArray)
-
-var producePlan = function(input){
-	for(i=0;i<input.length;i++){
-		input[i].splice(1, 0, types[i])
-	}
-	console.log(input, "this is input")
-	var slicedGrade = grade.slice();
-	var currGrade = 0;
-	var currTopic = ""
-	var initialPlan = [];
-	for(i=0;i<input.length;i++){
-		currGrade = parseInt(input[i][0]);
-		currTopic = input[i][1];
-		// console.log(currTopic, "currTopic")
-		// console.log(currGrade, "currGrade")
-		for(j=0;j<slicedGrade.length;j++){
-			if((slicedGrade[j][0] < currGrade) && (currTopic === slicedGrade[j][1])){
-				slicedGrade[j] = "nada"
-			}
-		}
-	}
-	for(i=0;i<slicedGrade.length;i++){
-		if(slicedGrade[i] != ["nada"]){
-			initialPlan.push(slicedGrade[i].join(""))
-		}
-	}
-	for(i=0;i<5;i++){
-		var n = initialPlan[i];
-		plan.push(n)
-	}
-	console.log(plan, "this is the plan")
-}
-
-
 
 var students = [];
 var testArray = [];
@@ -82,23 +44,66 @@ Papa.parse(studentTests, {
 
 		}
 		students.push(studentInfo[0])
-		for(i=1;i<studentInfo.length;i++){
+		for(var i=1;i<studentInfo.length;i++){
 			testInfo.push([studentInfo[i]])
 		}
 		testArray.push(testInfo)
 	}
 });
 
+for(var i=0;i<grade.length;i++){
+	grade[i].splice(1, 0, topic[i])
+}
 
-// producePlan(sampleStudent)
+var producePlan = function(student){
+	// console.log(student, "this is student");
+
+	var newArr =[];
+
+	for(var i=0;i<student.length;i++){
+		newArr.push([
+			student[i][0],
+			types[i]
+		]);
+		// student[i] = [student[i], types[i]]
+		// student[i].splice(1, 0, types[i])
+	}
+	console.log(newArr, "student2")
+	var slicedGrade = grade.slice();
+	var currGrade = 0;
+	var currTopic = "";
+	var initialPlan = [];
+	var plan = [];
+	for(var i=0;i<student.length;i++){
+		currGrade = parseInt(student[i][0]);
+		currTopic = student[i][1];
+		// console.log(currTopic, "currTopic")
+		// console.log(currGrade, "currGrade")
+		for(var j=0;j<slicedGrade.length;j++){
+			if((slicedGrade[j][0] < currGrade) && (currTopic === slicedGrade[j][1])){
+				slicedGrade[j] = "nada";
+			} else {
+				initialPlan.push(slicedGrade[j][0] + slicedGrade[j][1]);
+			}
+		}
+	}
+	for(var i=0;i<5;i++){
+		var n = initialPlan[i];
+		plan.push(n)
+	}
+	console.log(plan, "this is the plan")
+}
 
 
-var initiateApp = function(){
-	for(i=0;i<testArray.length;i++){
-		console.log("la")
-		// sampleStudent = testArray[i]
-		// producePlan(sampleStudent)
+
+
+function initiateApp(){
+	console.log(testArray.length)
+	for(var i = 0; i < testArray.length; i++){
+		producePlan(testArray[i])
+		//console.log(testArray[i])
 	}
 }
+
 initiateApp()
 

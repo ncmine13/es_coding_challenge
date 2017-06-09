@@ -5,7 +5,7 @@ var file1 = 'data/domain_order.csv';
 var file2 = 'data/student_tests.csv';
 
 
-var sampleStudent = [['1'],['1'],['1'],['K']]
+var sampleStudent = []
 var types = ['RF', 'RL', 'RI', 'L'];
 var studentStrings = [];
 var grade = [];
@@ -29,23 +29,25 @@ Papa.parse(domainOrder, {
 });
 
 
-
-// console.log(testArray)
+for(i=0;i<grade.length;i++){
+grade[i].splice(1, 0, topic[i])
+}
+	// console.log(testArray)
 
 var producePlan = function(input){
-	for(i=0;i<grade.length;i++){
-	grade[i].splice(1, 0, topic[i])
+	for(i=0;i<input.length;i++){
+		input[i].splice(1, 0, types[i])
 	}
-	for(i=0;i<sampleStudent.length;i++){
-		sampleStudent[i].splice(1, 0, types[i])
-	}
+	console.log(input, "this is input")
 	var slicedGrade = grade.slice();
 	var currGrade = 0;
 	var currTopic = ""
-	var initialPlan = []
+	var initialPlan = [];
 	for(i=0;i<input.length;i++){
 		currGrade = parseInt(input[i][0]);
 		currTopic = input[i][1];
+		// console.log(currTopic, "currTopic")
+		// console.log(currGrade, "currGrade")
 		for(j=0;j<slicedGrade.length;j++){
 			if((slicedGrade[j][0] < currGrade) && (currTopic === slicedGrade[j][1])){
 				slicedGrade[j] = "nada"
@@ -88,14 +90,15 @@ Papa.parse(studentTests, {
 });
 
 
+// producePlan(sampleStudent)
 
-console.log(testArray, "this is the test array")
-for(i=0;i<testArray.length;i++){
-	sampleStudent = testArray[i];
-	console.log(sampleStudent, "this is sample")
+
+var initiateApp = function(){
+	for(i=0;i<testArray.length;i++){
+		console.log("la")
+		// sampleStudent = testArray[i]
+		// producePlan(sampleStudent)
+	}
 }
-
-
-producePlan(sampleStudent)
-
+initiateApp()
 

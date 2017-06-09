@@ -1,17 +1,19 @@
 
 var Papa = require('babyparse');
 var fs = require('fs');
-var file = 'data/domain_order.csv';
+var file1 = 'data/domain_order.csv';
+var file2 = 'data/student_tests.csv';
 
-var sampleStudent = [['5'],['5'],['5'],['2']]
+
+var sampleStudent = [['1'],['1'],['1'],['K']]
 var types = ['RF', 'RL', 'RI', 'L'];
 var studentStrings = [];
 var grade = [];
 var topic = [];
 var plan = [];
 
-var content = fs.readFileSync(file, { encoding: 'binary' });
-Papa.parse(content, {
+var domainOrder = fs.readFileSync(file1, { encoding: 'binary' });
+Papa.parse(domainOrder, {
     step: function(row){
     	var rowData = row.data[0];
     	var gradeLevel = rowData[0];
@@ -21,25 +23,27 @@ Papa.parse(content, {
     	rowData.shift();
     	for(i=0; i<rowData.length; i++){
     		grade.push([parseInt(gradeLevel)]);
-    	}
-    	for(i=0; i<rowData.length;i++){
     		topic.push(rowData[i])
     	}
     }
 });
 
-for(i=0;i<grade.length;i++){
-	grade[i].splice(1, 0, topic[i])
-}
-for(i=0;i<sampleStudent.length;i++){
-	sampleStudent[i].splice(1, 0, types[i])
-}
-
-
-// console.log(sampleStudent, "this is sample student")
+var studentTests = fs.readFileSync(file2, { encoding: 'binary' });
+Papa.parse(studentTests, {
+	header: true,
+	step: function(row){
+		var rowData = row.data
+		console.log(rowData)
+	}
+})
 
 var producePlan = function(input){
-	console.log(input);
+	for(i=0;i<grade.length;i++){
+	grade[i].splice(1, 0, topic[i])
+	}
+	for(i=0;i<sampleStudent.length;i++){
+		sampleStudent[i].splice(1, 0, types[i])
+	}
 	var slicedGrade = grade.slice();
 	var currGrade = 0;
 	var currTopic = ""
@@ -55,33 +59,17 @@ var producePlan = function(input){
 	}
 	for(i=0;i<slicedGrade.length;i++){
 		if(slicedGrade[i] != ["nada"]){
-			initialPlan.push(slicedGrade[i])
+			initialPlan.push(slicedGrade[i].join(""))
 		}
 	}
 	for(i=0;i<5;i++){
-		var n = initialPlan[i].join("");
-		console.log(n)
+		var n = initialPlan[i];
 		plan.push(n)
 	}
 	console.log(plan)
 }
 
-// console.log(grade, "these are the grades");
+
 
 producePlan(sampleStudent)
 
-
-
-
-// ['0RF', '0RL', '0RI', '1RF', '1RL', '1RI', '2RF', '2RI', '2RL', '2L', '3RF', '3RL', '3RI', '3L', '4RI', '4RL', '4L', '5RI', '5RL', '5L', '6RI', '6RL' ]
-
-
-//with sample student:
-	//sort through 1-4 in array and find lowest number;
-	//get up to grade level in that category: (2L, 3L, 4L) 5RI, 5RL
-
-//objective: take in data from both files and produce learning path based on students' current levels in 4 categories
-//first:
-	//check for lowest grade performance. assign levels up to where it might go past something they're already at
-	//find lowest and start there 
-	//want an output of 5; skip if it's lower than current grade level

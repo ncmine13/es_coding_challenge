@@ -1,9 +1,7 @@
-
 var Papa = require('babyparse');
 var fs = require('fs');
 var file1 = 'data/domain_order.csv';
 var file2 = 'data/student_tests.csv';
-
 
 
 var types = ['RF', 'RL', 'RI', 'L'];
@@ -11,7 +9,6 @@ var grade = [];
 var topic = [];
 var students = [];
 var testArray = [];
-
 
 var domainOrder = fs.readFileSync(file1, { encoding: 'binary' });
 Papa.parse(domainOrder, {
@@ -35,7 +32,6 @@ Papa.parse(studentTests, {
 	header: true,
 	step: function(row){
 		var rowData = row.data[0];
-		// console.log(rowData)
 		var studentInfo = [];
 		testInfo = [];
 		for(key in rowData){
@@ -48,6 +44,7 @@ Papa.parse(studentTests, {
 		testArray.push(testInfo)
 	}
 });
+
 
 for(var i=0;i<grade.length;i++){
 	grade[i].splice(1, 0, topic[i])
@@ -88,13 +85,14 @@ var producePlan = function(student){
 		plan.push(n);
 	}
 	console.log(plan.join(", "))
+
 }
 
 
 
 function initiateApp(){
 	for(var i = 0; i < testArray.length; i++){
-		console.log("Learning plan for " + students[i] + ": ")
+		process.stdout.write("Learning plan for " + students[i] + ": ");
 		producePlan(testArray[i]);
 	}
 }

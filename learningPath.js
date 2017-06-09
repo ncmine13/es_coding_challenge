@@ -28,27 +28,33 @@ Papa.parse(domainOrder, {
 });
 
 
+
 Papa.parse(studentTests, {
 	header: true,
 	step: function(row){
 		var rowData = row.data[0];
 		var studentInfo = [];
 		testInfo = [];
-		typeLabel = [];
+		category = [];
 		for(key in rowData){
 			studentInfo.push(rowData[key])
 		}
 		for(key in rowData){
-			typeLabel.push(key)
-		}
+			category.push(key);
+		}	
 		students.push(studentInfo[0])
 		for(var i=1;i<studentInfo.length;i++){
-			testInfo.push([studentInfo[i]])
+			testInfo.push([studentInfo[i]]);
 		}
 		testArray.push(testInfo);
-		types = [typeLabel[1],typeLabel[2], typeLabel[3], typeLabel[4]]
+		for(i = 1; i < category.length; i++){
+			if(types.length < category.length - 1) {
+				types.push(category[i])
+			}
+		}
 	}
 });
+console.log(types)
 
 
 function producePlan(student){

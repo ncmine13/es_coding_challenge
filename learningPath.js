@@ -2,7 +2,8 @@ var Papa = require('babyparse');
 var fs = require('fs');
 var file1 = 'data/domain_order.csv';
 var file2 = 'data/student_tests.csv';
-
+var domainOrder = fs.readFileSync(file1, { encoding: 'binary' });
+var studentTests = fs.readFileSync(file2, { encoding: 'binary' });
 
 var types = ['RF', 'RL', 'RI', 'L'];
 var grade = [];
@@ -10,7 +11,7 @@ var topic = [];
 var students = [];
 var testArray = [];
 
-var domainOrder = fs.readFileSync(file1, { encoding: 'binary' });
+
 Papa.parse(domainOrder, {
     step: function(row){
     	var rowData = row.data[0];
@@ -27,7 +28,6 @@ Papa.parse(domainOrder, {
 });
 
 
-var studentTests = fs.readFileSync(file2, { encoding: 'binary' });
 Papa.parse(studentTests, {
 	header: true,
 	step: function(row){
@@ -46,29 +46,24 @@ Papa.parse(studentTests, {
 });
 
 
-for(var i=0;i<grade.length;i++){
-	grade[i].splice(1, 0, topic[i])
-}
-
-var producePlan = function(student){
-	var newArr =[];
+function producePlan(student){
 	var slicedGrade = grade.slice();
+	var expStudent =[];
 	var currGrade = 0;
 	var currTopic = "";
-	var initialPlan = [];
 	var plan = [];
 	for(var i=0;i<student.length;i++){
 		if(student[i][0] === 'K'){
 			student[i][0] = 0;
 		}
-		newArr.push([
+		expStudent.push([
 			student[i][0],
 			types[i]
 		]);
 	}
 	for(var i=0;i<student.length;i++){
-		currGrade = parseInt(newArr[i][0]);
-		currTopic = newArr[i][1];
+		currGrade = parseInt(expStudent[i][0]);
+		currTopic = expStudent[i][1];
 		for(var j=0;j<slicedGrade.length;j++){
 			if((slicedGrade[j][0] < currGrade) && (currTopic === slicedGrade[j][1])){
 				slicedGrade[j] = "nada";
@@ -76,26 +71,38 @@ var producePlan = function(student){
 		}
 	}
 	for(i=0;i<slicedGrade.length;i++){
-		if(slicedGrade[i] != ["nada"]){
-			initialPlan.push(slicedGrade[i].join(""))
+		if(plan.length < 5) {
+			if(slicedGrade[i] != ["nada"]){
+				plan.push(slicedGrade[i].join(""))
+			}
 		}
 	}
-	for(var i=0;i<5;i++){
-		var n = initialPlan[i];
-		plan.push(n);
-	}
-	console.log(plan.join(", "))
-
+	console.log(plan.join(", "));
 }
 
 
 
 function initiateApp(){
+	for(var i=0;i<grade.length;i++){
+		grade[i].splice(1, 0, topic[i])
+	}
 	for(var i = 0; i < testArray.length; i++){
 		process.stdout.write("Learning plan for " + students[i] + ": ");
 		producePlan(testArray[i]);
 	}
 }
 
+
 initiateApp();
+
+
+module.exports = {
+	initiateApp: initiateApp,
+	producePlan: producePlan,
+	grade: grade,
+	testArray: testArray,
+	students: students,
+	types: types,
+	topic: topic
+}
 

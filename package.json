@@ -20,5 +20,8 @@
     "babyparse": "^0.4.6",
     "jquery": "^3.2.1",
     "papaparse": "^4.3.3"
+  },
+  "devDependencies": {
+    "intercept-stdout": "^0.1.2"
   }
 }

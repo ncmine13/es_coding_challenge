@@ -43,6 +43,7 @@ var producePlan = function(input){
 	var slicedGrade = grade.slice();
 	var currGrade = 0;
 	var currTopic = ""
+	var initialPlan = []
 	for(i=0;i<input.length;i++){
 		currGrade = parseInt(input[i][0]);
 		currTopic = input[i][1];
@@ -50,13 +51,19 @@ var producePlan = function(input){
 			if((slicedGrade[j][0] < currGrade) && (currTopic === slicedGrade[j][1])){
 				slicedGrade[j] = "nada"
 			}
-			// if((currTopic === slicedGrade[j][1]) && (currGrade === slicedGrade[j][0])){
-			// 	var n = slicedGrade[j]
-			// 	console.log(n)
-			// }
 		}
 	}
-	console.log(slicedGrade)
+	for(i=0;i<slicedGrade.length;i++){
+		if(slicedGrade[i] != ["nada"]){
+			initialPlan.push(slicedGrade[i])
+		}
+	}
+	for(i=0;i<5;i++){
+		var n = initialPlan[i].join("");
+		console.log(n)
+		plan.push(n)
+	}
+	console.log(plan)
 }
 
 // console.log(grade, "these are the grades");

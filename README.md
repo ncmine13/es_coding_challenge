@@ -1,3 +1,20 @@
+== Naomi's Instructions ==
+
+This program is written in Node.js. To run locally, make sure you have node installed globally and clone the repo. In the command line, navigate to the root directory, titled "problem_code_(1)". Once inside, run 
+	`npm install`.
+
+
+Once all dependencies are installed, run 
+	`node learningPath.js`.
+
+
+The tests are written in Jasmine. To run them, install jasmine globally by running 
+	`npm install -g jasmine`.
+Then, run `jasmine init` in the root directory. To run the tests, run `jasmine`. In order to uncomment tests, remove the 'x' from the beginning of the describe statement.
+
+
+
+
 == Setup ==
 
 Our mission is to provide the best learning experiences to students, personalized

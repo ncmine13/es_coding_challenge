@@ -22,6 +22,7 @@
     "papaparse": "^4.3.3"
   },
   "devDependencies": {
-    "intercept-stdout": "^0.1.2"
+    "intercept-stdout": "^0.1.2",
+    "jasmine": "^2.6.0"
   }
 }

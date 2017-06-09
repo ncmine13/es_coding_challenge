@@ -25,7 +25,6 @@ Papa.parse(domainOrderFile, {
 });
 
 
-
 Papa.parse(studentTestFile, {
 	header: true,
 	step: function(row){
@@ -35,15 +34,13 @@ Papa.parse(studentTestFile, {
 		category = [];
 		for(key in rowData){
 			studentInfo.push(rowData[key]);
-		}
-		for(key in rowData){
 			category.push(key);
-		}	
-		students.push(studentInfo[0])
+		}
 		for(var i=1;i<studentInfo.length;i++){
 			testInfo.push([studentInfo[i]]);
 		}
 		testArray.push(testInfo);
+		students.push(studentInfo[0])
 		for(i = 1; i < category.length; i++){
 			if(categories.length < category.length - 1) {
 				categories.push(category[i]);

@@ -14,15 +14,13 @@ var content = fs.readFileSync(file, { encoding: 'binary' });
 Papa.parse(content, {
     step: function(row){
     	var rowData = row.data[0];
-
     	var gradeLevel = rowData[0];
-    	var row1 = rowData[1];
     	if((gradeLevel) === 'K') {
-    		gradeLevel = '0';
+    		gradeLevel = 0;
     	}
     	rowData.shift();
     	for(i=0; i<rowData.length; i++){
-    		grade.push([gradeLevel])
+    		grade.push([parseInt(gradeLevel)]);
     	}
     	for(i=0; i<rowData.length;i++){
     		topic.push(rowData[i])
@@ -38,26 +36,30 @@ for(i=0;i<sampleStudent.length;i++){
 }
 
 
-console.log(sampleStudent, "this is sample student")
+// console.log(sampleStudent, "this is sample student")
 
 var producePlan = function(input){
 	console.log(input);
 	var slicedGrade = grade.slice();
-	var currGrade = "";
+	var currGrade = 0;
 	var currTopic = ""
 	for(i=0;i<input.length;i++){
-		currGrade = input[i][0];
+		currGrade = parseInt(input[i][0]);
 		currTopic = input[i][1];
 		for(j=0;j<slicedGrade.length;j++){
-			if((currTopic === slicedGrade[j][1]) && (currGrade === slicedGrade[j][0]))   {
-				slicedGrade[j] = "la";
+			if((slicedGrade[j][0] < currGrade) && (currTopic === slicedGrade[j][1])){
+				slicedGrade[j] = "nada"
 			}
+			// if((currTopic === slicedGrade[j][1]) && (currGrade === slicedGrade[j][0])){
+			// 	var n = slicedGrade[j]
+			// 	console.log(n)
+			// }
 		}
 	}
 	console.log(slicedGrade)
 }
 
-console.log(grade, "these are the grades");
+// console.log(grade, "these are the grades");
 
 producePlan(sampleStudent)
 

@@ -73,11 +73,13 @@ function producePlan(student){
 	for(i=0;i<slicedGrade.length;i++){
 		if(plan.length < 5) {
 			if(slicedGrade[i] != ["nada"]){
-				plan.push(slicedGrade[i].join(""))
+				if(slicedGrade[i] !== undefined){
+					plan.push(slicedGrade[i].join("."))
+				}
 			}
 		}
 	}
-	console.log(plan.join(", "));
+	process.stdout.write(plan.join(", ") + "\n");
 }
 
 

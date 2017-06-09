@@ -28,14 +28,9 @@ Papa.parse(domainOrder, {
     }
 });
 
-var studentTests = fs.readFileSync(file2, { encoding: 'binary' });
-Papa.parse(studentTests, {
-	header: true,
-	step: function(row){
-		var rowData = row.data
-		console.log(rowData)
-	}
-})
+
+
+// console.log(testArray)
 
 var producePlan = function(input){
 	for(i=0;i<grade.length;i++){
@@ -66,10 +61,41 @@ var producePlan = function(input){
 		var n = initialPlan[i];
 		plan.push(n)
 	}
-	console.log(plan)
+	console.log(plan, "this is the plan")
 }
 
 
 
+var students = [];
+var testArray = [];
+var studentTests = fs.readFileSync(file2, { encoding: 'binary' });
+Papa.parse(studentTests, {
+	header: true,
+	step: function(row){
+		var rowData = row.data[0];
+		var studentInfo = [];
+		testInfo = [];
+		for(key in rowData){
+			studentInfo.push(rowData[key])
+
+		}
+		students.push(studentInfo[0])
+		for(i=1;i<studentInfo.length;i++){
+			testInfo.push([studentInfo[i]])
+		}
+		testArray.push(testInfo)
+	}
+});
+
+
+
+console.log(testArray, "this is the test array")
+for(i=0;i<testArray.length;i++){
+	sampleStudent = testArray[i];
+	console.log(sampleStudent, "this is sample")
+}
+
+
 producePlan(sampleStudent)
+
 

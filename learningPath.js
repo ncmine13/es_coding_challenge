@@ -3,26 +3,12 @@ var Papa = require('babyparse');
 var fs = require('fs');
 var file = 'data/domain_order.csv';
 
-var sampleStudent = ['5','5','5','2']
+var sampleStudent = [['5'],['5'],['5'],['2']]
 var types = ['RF', 'RL', 'RI', 'L'];
 var studentStrings = [];
-var levels = [];
-
-
-
-
-
-// for(i=0;i<sampleStudent.length;i++){
-// 	for(i=0;i<sampleStudent.length; i++){
-// 		var j = sampleStudent[i].split("");
-// 		var k = types[i];
-// 		j.push(k);
-// 		var l = j.join("");
-// 		studentStrings.push(l);
-// 	}
-// }
 var grade = [];
 var topic = [];
+var plan = [];
 
 var content = fs.readFileSync(file, { encoding: 'binary' });
 Papa.parse(content, {
@@ -45,12 +31,35 @@ Papa.parse(content, {
 });
 
 for(i=0;i<grade.length;i++){
-	console.log(grade[i]);
 	grade[i].splice(1, 0, topic[i])
-
 }
+for(i=0;i<sampleStudent.length;i++){
+	sampleStudent[i].splice(1, 0, types[i])
+}
+
+
+console.log(sampleStudent, "this is sample student")
+
+var producePlan = function(input){
+	console.log(input);
+	var slicedGrade = grade.slice();
+	var currGrade = "";
+	var currTopic = ""
+	for(i=0;i<input.length;i++){
+		currGrade = input[i][0];
+		currTopic = input[i][1];
+		for(j=0;j<slicedGrade.length;j++){
+			if((currTopic === slicedGrade[j][1]) && (currGrade === slicedGrade[j][0]))   {
+				slicedGrade[j] = "la";
+			}
+		}
+	}
+	console.log(slicedGrade)
+}
+
 console.log(grade, "these are the grades");
-console.log(topic, "these are all the topics")
+
+producePlan(sampleStudent)
 
 
 

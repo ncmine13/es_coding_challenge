@@ -4,40 +4,59 @@ var fs = require('fs');
 var file = 'data/domain_order.csv';
 
 var sampleStudent = ['5','5','5','2']
-var studentStrings = [];
 var types = ['RF', 'RL', 'RI', 'L'];
-for(i=0;i<sampleStudent.length;i++){
-	for(i=0;i<sampleStudent.length; i++){
-		var j = sampleStudent[i].split("");
-		var k = types[i];
-		j.push(k);
-		var l = j.join("");
-		studentStrings.push(l);
-	}
-}
-console.log(studentStrings, "strings");
-
-min = Math.min.apply(Math, sampleStudent)
-console.log(min, "this is min");
-
+var studentStrings = [];
 var levels = [];
+
+
+
+
+
+// for(i=0;i<sampleStudent.length;i++){
+// 	for(i=0;i<sampleStudent.length; i++){
+// 		var j = sampleStudent[i].split("");
+// 		var k = types[i];
+// 		j.push(k);
+// 		var l = j.join("");
+// 		studentStrings.push(l);
+// 	}
+// }
+var grade = [];
+var topic = [];
 
 var content = fs.readFileSync(file, { encoding: 'binary' });
 Papa.parse(content, {
     step: function(row){
     	var rowData = row.data[0];
+
     	var gradeLevel = rowData[0];
+    	var row1 = rowData[1];
+    	if((gradeLevel) === 'K') {
+    		gradeLevel = '0';
+    	}
     	rowData.shift();
     	for(i=0; i<rowData.length; i++){
-    		var j = rowData[i].split("");
-    		j.unshift(gradeLevel);
-    		var k = j.join("");
-    		levels.push(k);
+    		grade.push([gradeLevel])
+    	}
+    	for(i=0; i<rowData.length;i++){
+    		topic.push(rowData[i])
     	}
     }
 });
 
-console.log(levels, "these are the levels");
+for(i=0;i<grade.length;i++){
+	console.log(grade[i]);
+	grade[i].splice(1, 0, topic[i])
+
+}
+console.log(grade, "these are the grades");
+console.log(topic, "these are all the topics")
+
+
+
+
+// ['0RF', '0RL', '0RI', '1RF', '1RL', '1RI', '2RF', '2RI', '2RL', '2L', '3RF', '3RL', '3RI', '3L', '4RI', '4RL', '4L', '5RI', '5RL', '5L', '6RI', '6RL' ]
+
 
 //with sample student:
 	//sort through 1-4 in array and find lowest number;

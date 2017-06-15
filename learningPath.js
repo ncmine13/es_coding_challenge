@@ -58,7 +58,6 @@ Papa.parse(studentTestFile, {
 
 
 function producePlan(testInfo){
-	console.log(testInfo)
 	var learningPlanCopy = learningPlan.slice();
 	var indStudentInfo =[];
 	var currGrade = 0;
@@ -70,7 +69,6 @@ function producePlan(testInfo){
 			domainHeaders[i]
 		]);
 	}	
-	console.log(indStudentInfo, "indStudentInfo")
 	for(var i=0;i<testInfo.length;i++){
 		currGrade = parseInt(indStudentInfo[i][0]);
 		currTopic = indStudentInfo[i][1];
@@ -95,7 +93,7 @@ function producePlan(testInfo){
 	process.stdout.write(individualizedPlan.join(", ") + "\n");
 }
 
-
+var newObj = []
 
 function initiateProgram(){
 	for(var i=0;i<learningPlan.length;i++){
@@ -105,19 +103,31 @@ function initiateProgram(){
 		planToCsv.push({name: students[i]});
 		process.stdout.write(students[i] + ": ");
 		producePlan(testArray[i]);
+		var reducedObject = planToCsv.reduce(function(result, currentObject) {
+		    for(var key in currentObject) {
+		        if (currentObject.hasOwnProperty(key)) {
+		            result[key] = currentObject[key];
+		        }
+		    }
+		    return result;
+
+		}, {});
+		newObj.push(reducedObject)
 	}
-	makeCSV();
+	createCSV();
 }
 
-function makeCSV() {
-	console.log(planToCsv, "in makeCSV");
-	var csv = json2csv({ data: planToCsv, fields: fields});
- 
+function createCSV() {
+	console.log(newObj, "new")
+	// console.log(planToCsv)
+	var csv = json2csv({ data: newObj, fields: fields});
+
 	fs.writeFile('learning-plan.csv', csv, function(err) {
 	  if (err) throw err;
 	  console.log('file saved');
 	});
 }
+
 
 
 initiateProgram();

@@ -66,7 +66,7 @@ function producePlan(testInfo){
 		]);
 		currentGrade = parseInt(thisStudentInfo[i][0]);
 		currentDomain = thisStudentInfo[i][1];
-		adjustStudentPlan(thisStudentInfo, learningPlanCopy, currentGrade, currentDomain)
+		adjustPlanCopy(thisStudentInfo, learningPlanCopy, currentGrade, currentDomain)
 	}	
 	createStudentPlan(individualizedPlan, learningPlanCopy)
 	planToCsv.push({plan: individualizedPlan.join(", ")})
@@ -74,7 +74,7 @@ function producePlan(testInfo){
 }
 
 
-function adjustStudentPlan(thisStudentInfo, learningPlanCopy, currentGrade, currentDomain){
+function adjustPlanCopy(thisStudentInfo, learningPlanCopy, currentGrade, currentDomain){
 	for(var i=0;i<learningPlanCopy.length;i++){
 		if(learningPlanCopy[i][0] === 'K'){
 			learningPlanCopy[i][0] = 0;

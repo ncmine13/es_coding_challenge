@@ -66,15 +66,27 @@ function producePlan(testInfo){
 		]);
 		currentGrade = parseInt(thisStudentInfo[i][0]);
 		currentDomain = thisStudentInfo[i][1];
-		for(var j=0;j<learningPlanCopy.length;j++){
-			if(learningPlanCopy[j][0] === 'K'){
-				learningPlanCopy[j][0] = 0;
-			}
-			if((learningPlanCopy[j][0] < currentGrade) && (currentDomain === learningPlanCopy[j][1])){
-				learningPlanCopy[j] = "nada";
-			} 
-		}
+		adjustStudentPlan(thisStudentInfo, learningPlanCopy, currentGrade, currentDomain)
 	}	
+	createStudentPlan(individualizedPlan, learningPlanCopy)
+	planToCsv.push({plan: individualizedPlan.join(", ")})
+	process.stdout.write(individualizedPlan.join(", ") + "\n");
+}
+
+
+function adjustStudentPlan(thisStudentInfo, learningPlanCopy, currentGrade, currentDomain){
+	for(var i=0;i<learningPlanCopy.length;i++){
+		if(learningPlanCopy[i][0] === 'K'){
+			learningPlanCopy[i][0] = 0;
+		}
+		if((learningPlanCopy[i][0] < currentGrade) && (currentDomain === learningPlanCopy[i][1])){
+			learningPlanCopy[i] = "nada";
+		} 
+	}
+}
+
+
+function createStudentPlan(individualizedPlan, learningPlanCopy){
 	for(var i=0;i<learningPlanCopy.length;i++){
 		if((individualizedPlan.length < 5) && (learningPlanCopy[i] !== "nada") && (learningPlanCopy[i] !== undefined)) {
 			if(learningPlanCopy[i][0] === 0){
@@ -83,8 +95,6 @@ function producePlan(testInfo){
 			individualizedPlan.push(learningPlanCopy[i].join("."));
 		}
 	}
-	planToCsv.push({plan: individualizedPlan.join(", ")})
-	process.stdout.write(individualizedPlan.join(", ") + "\n");
 }
 
 
@@ -102,6 +112,7 @@ function initiateProgram(){
 }
 
 
+
 function reducePlanObject(){
 	var reducedObject = planToCsv.reduce(function(result, currentObject) {
 	    for(var key in currentObject) {
@@ -113,6 +124,7 @@ function reducePlanObject(){
 	}, {});
 	reducedPlanToCsv.push(reducedObject)
 }
+
 
 
 function createCSV() {

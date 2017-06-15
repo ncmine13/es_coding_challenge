@@ -8,9 +8,9 @@ Once all dependencies are installed, run
 	`node learningPath.js`.
 
 
-The tests are written in Jasmine. Install jasmine globally by running 
+The tests are written in Jasmine and configured to run in node. Install jasmine globally by running 
 	`npm install -g jasmine`.
-Then, run `jasmine init` in the root directory. To run the tests, run `jasmine`. In order to uncomment suites, remove the 'x' from the beginning of the describe statement.
+Then, run `jasmine init` in the root directory. To run the tests, run `npm test`. In order to uncomment suites, remove the 'x' from the beginning of the describe statement.
 
 
 

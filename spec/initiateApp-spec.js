@@ -6,7 +6,7 @@ describe("The initiation function", function(){
 		expect(plan[0][0]).not.toBe(undefined);
 	});
 	it("should have access to student test data", function(){
-		var testArray = initiateProgram.testArray;
-		expect(testArray[0]).not.toBe(undefined);
+		var studentTestsArray = initiateProgram.studentTestsArray;
+		expect(studentTestsArray[0]).not.toBe(undefined);
 	})
 })

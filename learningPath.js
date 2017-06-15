@@ -14,7 +14,7 @@ var domainHeaders = [];
 var learningPlan = [];
 var domainList = [];
 var students = [];
-var testArray = [];
+var studentTestsArray = [];
 
 
 
@@ -36,7 +36,6 @@ Papa.parse(studentTestFile, {
 	step: function(row){
 		var rowData = row.data[0];
 		var studentTestInfo = [];
-		var testInfo = [];
 		var headers = [];
 		for(key in rowData){
 			studentTestInfo.push(rowData[key]);
@@ -44,7 +43,7 @@ Papa.parse(studentTestFile, {
 		}
 		students.push(studentTestInfo[0]);
 		studentTestInfo.shift();
-		testArray.push(studentTestInfo);
+		studentTestsArray.push(studentTestInfo);
 		for(i = 1; i < headers.length; i++){
 			if(domainHeaders.length < headers.length - 1) {
 				domainHeaders.push(headers[i]);
@@ -56,22 +55,22 @@ Papa.parse(studentTestFile, {
 
 function producePlan(testInfo){
 	var learningPlanCopy = learningPlan.slice();
-	var indStudentInfo =[];
-	var currGrade = 0;
-	var currDomain = "";
+	var thisStudentInfo =[];
+	var currentGrade = 0;
+	var currentDomain = "";
 	var individualizedPlan = [];
 	for(var i=0;i<testInfo.length;i++){
-		indStudentInfo.push([
+		thisStudentInfo.push([
 			testInfo[i][0],
 			domainHeaders[i]
 		]);
-		currGrade = parseInt(indStudentInfo[i][0]);
-		currDomain = indStudentInfo[i][1];
+		currentGrade = parseInt(thisStudentInfo[i][0]);
+		currentDomain = thisStudentInfo[i][1];
 		for(var j=0;j<learningPlanCopy.length;j++){
 			if(learningPlanCopy[j][0] === 'K'){
 				learningPlanCopy[j][0] = 0;
 			}
-			if((learningPlanCopy[j][0] < currGrade) && (currDomain === learningPlanCopy[j][1])){
+			if((learningPlanCopy[j][0] < currentGrade) && (currentDomain === learningPlanCopy[j][1])){
 				learningPlanCopy[j] = "nada";
 			} 
 		}
@@ -93,22 +92,28 @@ function initiateProgram(){
 	for(var i=0;i<learningPlan.length;i++){
 		learningPlan[i].splice(1, 0, domainList[i])
 	}
-	for(var i = 0; i < testArray.length; i++){
-		planToCsv.push({name: students[i]});
+	for(var i = 0; i < studentTestsArray.length; i++){
 		process.stdout.write(students[i] + ": ");
-		producePlan(testArray[i]);
-		var reducedObject = planToCsv.reduce(function(result, currentObject) {
-		    for(var key in currentObject) {
-		        if (currentObject.hasOwnProperty(key)) {
-		            result[key] = currentObject[key];
-		        }
-		    }
-		    return result;
-		}, {});
-		reducedPlanToCsv.push(reducedObject)
+		producePlan(studentTestsArray[i]);
+		planToCsv.push({name: students[i]});
+		reducePlanObject();
 	}
 	createCSV();
 }
+
+
+function reducePlanObject(){
+	var reducedObject = planToCsv.reduce(function(result, currentObject) {
+	    for(var key in currentObject) {
+	        if (currentObject.hasOwnProperty(key)) {
+	            result[key] = currentObject[key];
+	        }
+	    }
+	    return result;
+	}, {});
+	reducedPlanToCsv.push(reducedObject)
+}
+
 
 function createCSV() {
 	var csv = json2csv({ data: reducedPlanToCsv, fields: fields});
@@ -127,7 +132,7 @@ module.exports = {
 	initiateProgram: initiateProgram,
 	producePlan: producePlan,
 	learningPlan: learningPlan,
-	testArray: testArray,
+	studentTestsArray: studentTestsArray,
 	students: students,
 	domainHeaders: domainHeaders,
 	domainList: domainList

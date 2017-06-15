@@ -1,12 +1,12 @@
-var initiateApp = require('../learningPath.js');
+var initiateProgram = require('../learningPath.js');
 
-xdescribe("The initiation function", function(){
+describe("The initiation function", function(){
 	it("should populate grade array with topics", function() {
-		var grade = initiateApp.grade;
-		expect(grade[0][0]).not.toBe(undefined);
+		var plan = initiateProgram.learningPlan;
+		expect(plan[0][0]).not.toBe(undefined);
 	});
 	it("should have access to student test data", function(){
-		var testArray = initiateApp.testArray;
+		var testArray = initiateProgram.testArray;
 		expect(testArray[0]).not.toBe(undefined);
 	})
 })

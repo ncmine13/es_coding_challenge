@@ -1,15 +1,16 @@
 var Papa = require('babyparse');
 var fs = require('fs');
+var json2csv = require('json2csv');
+var fields = ['name', 'plan'];
 var file1 = 'data/domain_order.csv';
 var file2 = 'data/student_tests.csv';
 var domainOrderFile = fs.readFileSync(file1, { encoding: 'binary' });
 var studentTestFile = fs.readFileSync(file2, { encoding: 'binary' });
 
-var json2csv = require('json2csv');
-var fields = ['name', 'plan'];
+
+
 var planToCsv = [];
-
-
+var reducedPlanToCsv = [];
 var domainHeaders = [];
 var learningPlan = [];
 var domainList = [];
@@ -93,7 +94,6 @@ function producePlan(testInfo){
 	process.stdout.write(individualizedPlan.join(", ") + "\n");
 }
 
-var newObj = []
 
 function initiateProgram(){
 	for(var i=0;i<learningPlan.length;i++){
@@ -110,24 +110,20 @@ function initiateProgram(){
 		        }
 		    }
 		    return result;
-
 		}, {});
-		newObj.push(reducedObject)
+		reducedPlanToCsv.push(reducedObject)
 	}
 	createCSV();
 }
 
 function createCSV() {
-	console.log(newObj, "new")
-	// console.log(planToCsv)
-	var csv = json2csv({ data: newObj, fields: fields});
+	var csv = json2csv({ data: reducedPlanToCsv, fields: fields});
 
 	fs.writeFile('learning-plan.csv', csv, function(err) {
 	  if (err) throw err;
 	  console.log('file saved');
 	});
 }
-
 
 
 initiateProgram();

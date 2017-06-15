@@ -1,7 +1,7 @@
 var producePlan = require('../learningPath.js');
 var intercept = require("intercept-stdout")
 
-xdescribe("The produce plan function", function(){
+describe("The produce plan function", function(){
 	it("should correctly predict learning plan", function(){
 		var testArray = [[[ '2' ], [ '3' ], [ 0 ], [ '3' ]]];
 		var student = testArray[0];

@@ -8,7 +8,6 @@ var domainOrderFile = fs.readFileSync(file1, { encoding: 'binary' });
 var studentTestFile = fs.readFileSync(file2, { encoding: 'binary' });
 
 
-
 var planToCsv = [];
 var reducedPlanToCsv = [];
 var domainHeaders = [];
@@ -32,23 +31,20 @@ Papa.parse(domainOrderFile, {
 });
 
 
-
 Papa.parse(studentTestFile, {
 	header: true,
 	step: function(row){
 		var rowData = row.data[0];
 		var studentTestInfo = [];
-		testInfo = [];
-		headers = [];
+		var testInfo = [];
+		var headers = [];
 		for(key in rowData){
 			studentTestInfo.push(rowData[key]);
 			headers.push(key);
 		}
-		for(var i=1;i<studentTestInfo.length;i++){
-			testInfo.push([studentTestInfo[i]]);
-		}
-		testArray.push(testInfo);
-		students.push(studentTestInfo[0])
+		students.push(studentTestInfo[0]);
+		studentTestInfo.shift();
+		testArray.push(studentTestInfo);
 		for(i = 1; i < headers.length; i++){
 			if(domainHeaders.length < headers.length - 1) {
 				domainHeaders.push(headers[i]);
@@ -62,27 +58,25 @@ function producePlan(testInfo){
 	var learningPlanCopy = learningPlan.slice();
 	var indStudentInfo =[];
 	var currGrade = 0;
-	var currTopic = "";
+	var currDomain = "";
 	var individualizedPlan = [];
 	for(var i=0;i<testInfo.length;i++){
 		indStudentInfo.push([
 			testInfo[i][0],
 			domainHeaders[i]
 		]);
-	}	
-	for(var i=0;i<testInfo.length;i++){
 		currGrade = parseInt(indStudentInfo[i][0]);
-		currTopic = indStudentInfo[i][1];
+		currDomain = indStudentInfo[i][1];
 		for(var j=0;j<learningPlanCopy.length;j++){
 			if(learningPlanCopy[j][0] === 'K'){
 				learningPlanCopy[j][0] = 0;
 			}
-			if((learningPlanCopy[j][0] < currGrade) && (currTopic === learningPlanCopy[j][1])){
+			if((learningPlanCopy[j][0] < currGrade) && (currDomain === learningPlanCopy[j][1])){
 				learningPlanCopy[j] = "nada";
 			} 
 		}
-	}
-	for(i=0;i<learningPlanCopy.length;i++){
+	}	
+	for(var i=0;i<learningPlanCopy.length;i++){
 		if((individualizedPlan.length < 5) && (learningPlanCopy[i] !== "nada") && (learningPlanCopy[i] !== undefined)) {
 			if(learningPlanCopy[i][0] === 0){
 				learningPlanCopy[i][0] = 'K';

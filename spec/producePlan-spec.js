@@ -12,7 +12,6 @@ describe("The produce plan function", function(){
 		producePlan.producePlan(student);
 		logInterceptor();
 	});
-
 	it("should produce a plan that starts at the beginning if there are no scores available for a given student", function(){
 		var testArray = [[]];
 		var student = testArray[0];
@@ -45,30 +44,16 @@ describe("The produce plan function", function(){
 		producePlan.producePlan(student);
 		logInterceptor();
 	});
-	it("allows kindergarten data to be entered as 'K' initially", function(){
-		var testArray = [[ [ 0 ], [ '2' ], [ 0 ], [ '4' ] ]];
-
-		var student1 = testArray[0];
-
-		var logInterceptor = intercept(function(txt){
-			expect(txt).toEqual("K.RF, K.RI, 1.RF, 1.RI, 2.RF\n");
-		});
-
-
-		producePlan.producePlan(student1);
-		logInterceptor();
-
-	})
-	it("allows kindergarten data to be entered as 0 initially", function(){
-		var testArray2 = [[ [ 'K' ], [ '2' ], [ 'K' ], [ '4' ] ]];
-		var student2 = testArray2[0];
+	it("works with string value 'K' representing Kindergarten input data", function(){
+		var testArray = [[ [ 'K' ], [ '2' ], [ 'K' ], [ '4' ] ]];
+		var student = testArray[0];
 
 		var logInterceptor = intercept(function(txt){
 			expect(txt).toEqual("K.RF, K.RI, 1.RF, 1.RI, 2.RF\n");
 		});
 
 
-		producePlan.producePlan(student2);
+		producePlan.producePlan(student);
 		logInterceptor();
 	})
 })

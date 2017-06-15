@@ -51,21 +51,23 @@ Papa.parse(studentTestFile, {
 });
 
 
-function producePlan(student){
-	var learninglearningPlanCopy = learningPlan.slice();
-	var expStudent =[];
+function producePlan(testInfo){
+	console.log(testInfo)
+	var learningPlanCopy = learningPlan.slice();
+	var indStudentInfo =[];
 	var currGrade = 0;
 	var currTopic = "";
-	var plan = [];
-	for(var i=0;i<student.length;i++){
-		expStudent.push([
-			student[i][0],
+	var individualizedPlan = [];
+	for(var i=0;i<testInfo.length;i++){
+		indStudentInfo.push([
+			testInfo[i][0],
 			domainHeaders[i]
 		]);
-	}
-	for(var i=0;i<student.length;i++){
-		currGrade = parseInt(expStudent[i][0]);
-		currTopic = expStudent[i][1];
+	}	
+	console.log(indStudentInfo, "indStudentInfo")
+	for(var i=0;i<testInfo.length;i++){
+		currGrade = parseInt(indStudentInfo[i][0]);
+		currTopic = indStudentInfo[i][1];
 		for(var j=0;j<learningPlanCopy.length;j++){
 			if(learningPlanCopy[j][0] === 'K'){
 				learningPlanCopy[j][0] = 0;
@@ -76,34 +78,40 @@ function producePlan(student){
 		}
 	}
 	for(i=0;i<learningPlanCopy.length;i++){
-		if((plan.length < 5) && (learningPlanCopy[i] !== "nada") && (learningPlanCopy[i] !== undefined)) {
+		if((individualizedPlan.length < 5) && (learningPlanCopy[i] !== "nada") && (learningPlanCopy[i] !== undefined)) {
 			if(learningPlanCopy[i][0] === 0){
 				learningPlanCopy[i][0] = 'K';
 			}
-			plan.push(learningPlanCopy[i].join("."));
+			individualizedPlan.push(learningPlanCopy[i].join("."));
 		}
 	}
-	process.stdout.write(plan.join(", ") + "\n");
+	process.stdout.write(individualizedPlan.join(", ") + "\n");
 }
 
+var pathObj = {}
 
-
-function initiateApp(){
+function initiateProgram(){
 	for(var i=0;i<learningPlan.length;i++){
 		learningPlan[i].splice(1, 0, domainList[i])
 	}
 	for(var i = 0; i < testArray.length; i++){
+
+		pathObj[i] = students[i];
 		process.stdout.write(students[i] + ": ");
 		producePlan(testArray[i]);
 	}
+	console.log(pathObj, "pathObj")
 }
 
+// $('input[type=checkbox]').each(function(i, e) {
+//     stuff['row'+i] = e.checked;
+// });
 
-initiateApp();
+initiateProgram();
 
 
 module.exports = {
-	initiateApp: initiateApp,
+	initiateProgram: initiateProgram,
 	producePlan: producePlan,
 	learningPlan: learningPlan,
 	testArray: testArray,

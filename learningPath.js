@@ -17,7 +17,6 @@ var students = [];
 var studentTestsArray = [];
 
 
-
 Papa.parse(domainOrderFile, {
     step: function(row){
     	var rowData = row.data[0];
@@ -51,6 +50,7 @@ Papa.parse(studentTestFile, {
 		}
 	}
 });
+
 
 
 function producePlan(testInfo){
@@ -98,20 +98,6 @@ function createStudentPlan(individualizedPlan, learningPlanCopy){
 }
 
 
-function initiateProgram(){
-	for(var i=0;i<learningPlan.length;i++){
-		learningPlan[i].splice(1, 0, domainList[i])
-	}
-	for(var i = 0; i < studentTestsArray.length; i++){
-		process.stdout.write(students[i] + ": ");
-		producePlan(studentTestsArray[i]);
-		planToCsv.push({name: students[i]});
-		reducePlanObject();
-	}
-	createCSV();
-}
-
-
 
 function reducePlanObject(){
 	var reducedObject = planToCsv.reduce(function(result, currentObject) {
@@ -126,7 +112,6 @@ function reducePlanObject(){
 }
 
 
-
 function createCSV() {
 	var csv = json2csv({ data: reducedPlanToCsv, fields: fields});
 
@@ -137,8 +122,22 @@ function createCSV() {
 }
 
 
-initiateProgram();
 
+function initiateProgram(){
+	for(var i=0;i<learningPlan.length;i++){
+		learningPlan[i].splice(1, 0, domainList[i])
+	}
+	for(var i = 0; i < studentTestsArray.length; i++){
+		process.stdout.write(students[i] + ": ");
+		producePlan(studentTestsArray[i]);
+		planToCsv.push({name: students[i]});
+		reducePlanObject();
+	}
+	createCSV();
+}
+
+
+initiateProgram();
 
 module.exports = {
 	initiateProgram: initiateProgram,

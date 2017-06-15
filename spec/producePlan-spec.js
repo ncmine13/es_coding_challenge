@@ -10,9 +10,9 @@ describe("The produce plan function", function(){
 		});
 
 		producePlan.producePlan(student);
-		logInterceptor();
+		logInterceptor(); 
 	});
-	it("should produce a plan that starts at the beginning if there are no scores available for a given student", function(){
+	it("should produce a plan that starts at the lowest level if there are no scores available for a given student", function(){
 		var studentTestsArray = [[]];
 		var student = studentTestsArray[0];
 		var logInterceptor = intercept(function(txt){
@@ -21,7 +21,6 @@ describe("The produce plan function", function(){
 
 		producePlan.producePlan(student);
 		logInterceptor();
-
 	});
 	it("should produce a learning path with no more than five units", function(){
 		var studentTestsArray = [[ [ 0 ], [ '2' ], [ 0 ], [ '4' ] ]];
@@ -32,9 +31,8 @@ describe("The produce plan function", function(){
 
 		producePlan.producePlan(student);
 		logInterceptor();
-
 	});
-	it("can make a plan with less than five units if the student has completed all others", function(){
+	it("can make a plan with less than five units if the student has mastered all necessary content", function(){
 		var studentTestsArray = [[[ '6' ], [ '6' ], [ '6' ], [ '6' ] ]];
 		var student = studentTestsArray[0];
 		var logInterceptor = intercept(function(txt){
@@ -51,7 +49,6 @@ describe("The produce plan function", function(){
 		var logInterceptor = intercept(function(txt){
 			expect(txt).toEqual("K.RF, K.RI, 1.RF, 1.RI, 2.RF\n");
 		});
-
 
 		producePlan.producePlan(student);
 		logInterceptor();

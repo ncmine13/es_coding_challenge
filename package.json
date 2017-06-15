@@ -20,7 +20,8 @@
     "babyparse": "^0.4.6",
     "jquery": "^3.2.1",
     "json2csv": "^3.7.3",
-    "papaparse": "^4.3.3"
+    "papaparse": "^4.3.3",
+    "ya-csv": "^0.10.1"
   },
   "devDependencies": {
     "intercept-stdout": "^0.1.2",

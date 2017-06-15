@@ -5,6 +5,10 @@ var file2 = 'data/student_tests.csv';
 var domainOrderFile = fs.readFileSync(file1, { encoding: 'binary' });
 var studentTestFile = fs.readFileSync(file2, { encoding: 'binary' });
 
+var json2csv = require('json2csv');
+var fields = ['name'];
+
+
 var domainHeaders = [];
 var learningPlan = [];
 var domainList = [];
@@ -88,24 +92,30 @@ function producePlan(testInfo){
 	process.stdout.write(individualizedPlan.join(", ") + "\n");
 }
 
-var pathObj = {}
+var pathArr = []
 
 function initiateProgram(){
 	for(var i=0;i<learningPlan.length;i++){
 		learningPlan[i].splice(1, 0, domainList[i])
 	}
 	for(var i = 0; i < testArray.length; i++){
-
-		pathObj[i] = students[i];
+		pathArr.push({name: students[i]});
 		process.stdout.write(students[i] + ": ");
 		producePlan(testArray[i]);
 	}
-	console.log(pathObj, "pathObj")
+	makeCSV();
 }
 
-// $('input[type=checkbox]').each(function(i, e) {
-//     stuff['row'+i] = e.checked;
-// });
+function makeCSV() {
+	console.log(pathArr, "in makeCSV");
+	var csv = json2csv({ data: pathArr, fields: fields});
+ 
+	fs.writeFile('learning-plan.csv', csv, function(err) {
+	  if (err) throw err;
+	  console.log('file saved');
+	});
+}
+
 
 initiateProgram();
 
